@@ -1,8 +1,17 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config(); // Load the environment variables
+
+console.log("MONGO_URI: ", process.env.MONGO_URI);
 
 export async function connect() {
     try {
-        mongoose.connect(process.env.MONGO_URI!); // Connect to the database
+        if (!process.env.MONGO_URI) {
+            console.log("MONGO_URI not found in environment variables");
+            // process.exit(); // Exit the process if the MONGO_URI is not found
+        }
+        await mongoose.connect(process.env.MONGO_URI!) // Connect to the database
         const connection = mongoose.connection; // Get the default connection
 
         connection.on("connected", () => {
@@ -11,7 +20,7 @@ export async function connect() {
 
         connection.on("error", (error) => {
             console.log("Error connecting to database: ", error);
-            process.exit(1); // Exit the process if there is an error connecting to the database
+            process.exit(); // Exit the process if there is an error connecting to the database
         });
     } catch (error) {
         console.log("Error connecting to database: ", error);

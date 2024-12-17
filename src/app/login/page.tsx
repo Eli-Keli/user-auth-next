@@ -1,23 +1,50 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function Login() {
+    const router = useRouter();
     const [user, setUser] = React.useState({
         email: '',
         password: '',
     });
+    const [loading, setLoading] = React.useState(false);
 
-    const onLogin = async () => {};
+    const onLogin = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.post('/api/users/login', user);
+            console.log("Login success: ", response.data);
+            toast.success("Login successful");
+            router.push('/profile');
+        } catch (error: any) {
+            console.log("Login error: ", error);
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    const [buttonDisabled, setButtonDisabled] = React.useState(false);
+
+    useEffect(() => {
+        if (user.email.length > 0 && user.password.length > 0) {
+            setButtonDisabled(false);
+        } else {
+            setButtonDisabled(true);
+        }
+    }, [user]);
 
   return (
     <div className='flex flex-col justify-center items-center h-screen'>
-        <h1 className='text-2xl text-center'>Login</h1>
+        <h1 className='text-2xl text-center'>
+            {loading ? "Processing..." : "Login"}
+        </h1>
         <hr 
         className='w-1/4 my-4'
         />
@@ -38,7 +65,9 @@ export default function Login() {
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
                 className='p-2 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-600'
             />
-            <button onClick={onLogin} className='p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600'>Login here</button>
+            <button onClick={onLogin} className='p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-600'>
+                {buttonDisabled ? "Fill in the form" : "Login"}
+            </button>
             <Link href='/signup'>
                 Visit the SignUp page
             </Link>
