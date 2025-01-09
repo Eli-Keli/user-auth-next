@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname // Get the path from the request URL
 
     // Ckeck for public paths
-    const isPublicPath = path === '/login' || path === '/signup'
+    const isPublicPath = path === '/login' || path === '/signup' || path === '/verifyemail'
 
     // get token from cookies
     const token = request.cookies.get('token')?.value || ''
@@ -27,5 +27,6 @@ export const config = {
         '/profile',
         '/login',
         '/signup',
+        '/verifyemail',
     ],
 }
