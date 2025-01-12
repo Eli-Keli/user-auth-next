@@ -75,6 +75,11 @@ export default function Login() {
                         {buttonDisabled ? 'Fill in the form' : 'Login'}
                     </button>
                     <div className="text-center mt-4">
+                        <Link href="/forgotpassword" className="text-blue-600 hover:text-blue-800">
+                            Forgot your password?
+                        </Link>
+                    </div>
+                    <div className="text-center mt-4">
                         <Link href="/signup" className="text-blue-600 hover:text-blue-800">
                             Visit the SignUp page
                         </Link>

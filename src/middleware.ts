@@ -5,7 +5,7 @@ export function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname // Get the path from the request URL
 
     // Ckeck for public paths
-    const isPublicPath = path === '/login' || path === '/signup' || path === '/verifyemail'
+    const isPublicPath = path === '/login' || path === '/signup' || path === '/verifyemail' || path === '/resetpassword'
 
     // get token from cookies
     const token = request.cookies.get('token')?.value || ''
@@ -20,7 +20,7 @@ export function middleware(request: NextRequest) {
     }
 }
 
-// Matching paths: /, /profile, /login, /signup
+// Matching paths: /, /profile, /login, /signup, /verifyemail, /resetpassword
 export const config = {
     matcher: [
         '/',
@@ -28,5 +28,6 @@ export const config = {
         '/login',
         '/signup',
         '/verifyemail',
+        '/resetpassword',
     ],
 }
